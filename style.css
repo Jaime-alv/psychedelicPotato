@@ -49,3 +49,25 @@ header ul.nav {
     text-decoration: none;
     color: #eac784;
 }
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+}
+
+h2.title {
+    color: #0b421a;
+}
+
+div.title-container {
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+}
+
+h3.secondary {
+    font-style: italic;
+    text-decoration: underline;
+}
