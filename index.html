@@ -21,11 +21,17 @@
         <main class="main-body">
             <div class="title-container">
                 <h2 class="title">Try drawing something!</h2>
-                <h3 class="secondary">Move your mouse around the grid!</h3>
+                <h3 class="secondary">Move your mouse around within the canvas!</h3>
             </div>
             <div class="grid-container">
-                <aside class="information"></aside>
-                <canvas class="grid"></canvas>
+                <aside class="information">
+                    <form class="user-input">
+                        <label for="submit-text">Canvas size</label>
+                        <input type="text" class="submit-text">
+                        <input type="submit" value="Add value" class="submit-button">
+                    </form>
+                </aside>
+                <div class="grid-canvas"></div>
             </div>
         </main>
         <footer>

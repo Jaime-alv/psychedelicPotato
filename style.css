@@ -54,7 +54,10 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-evenly;
     margin: 0px;
+    padding: 0px;
+    flex: auto;
 }
 
 h2.title {
@@ -70,4 +73,50 @@ div.title-container {
 h3.secondary {
     font-style: italic;
     text-decoration: underline;
+}
+
+div.grid {
+    flex: auto;
+    margin: 0px;
+    padding: 0px;
+}
+
+div.grid-canvas {
+    display: flex;
+    border: 1px solid #362415;
+    border-radius: 3px;
+    flex-wrap: wrap;
+    margin: 0px;
+    padding: 0px;
+}
+
+div.grid-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+aside form {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 5px;
+    flex: auto;
+    width: 100px;
+}
+
+input.submit-button,
+input.submit-text {
+    border-radius: 5px;
+    padding: 5px 0px;
+}
+
+input.submit-button {
+    border: 0px;
+    background-color: #604c4c;
+    color: #fffcfc;
+}
+
+input.submit-button:hover {
+    background-color: #eac784;
+    color: #0b421a;
 }
