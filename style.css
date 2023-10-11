@@ -1,0 +1,51 @@
+/* 
+#0b421a	(11,66,26)
+#fffcfc	(255,252,252)
+#eac784	(234,199,132)
+#362415	(54,36,21)
+#604c4c	(96,76,76)
+*/
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: space-between;
+    margin: 0px;
+}
+
+footer {
+    padding-bottom: 20px;
+    padding-top: 10px;
+    text-align: center;
+    padding-right: 20px;
+    background-color: #604c4c;
+}
+
+header {
+    background-color: #0b421a;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 20px;
+    align-items: center;
+}
+
+footer .text {
+    color: #fffcfc;
+    font-size: 15px;
+}
+
+h1.title {
+    color: #eac784;
+    font-style: oblique;
+}
+
+header ul.nav {
+    list-style-type: none;
+}
+
+.nav a {
+    text-decoration: none;
+    color: #eac784;
+}
