@@ -1,21 +1,22 @@
 const gridContainer: HTMLElement = document.querySelector(".grid-canvas")!;
 const CANVAS_SIZE: number = 500;
+const DEFAULT_BACKGROUND_COLOUR: string = "black";
 
-function createGridItem(gridSize: number) {
+function createGridItem(gridSize: number, backgroundColor: string = DEFAULT_BACKGROUND_COLOUR) {
     console.log(gridSize);
     let gridItemSize: string = `${gridSize}px`;
     let gridItem = document.createElement("div");
     gridItem.classList.add("grid");
     gridItem.setAttribute("style", `width: ${gridItemSize}; height: ${gridItemSize};`);
     gridItem.addEventListener("mouseenter", () => {
-        gridItem.style.backgroundColor = "black";
-    })
+        gridItem.style.backgroundColor = backgroundColor;
+    });
     gridContainer.appendChild(gridItem);
 }
 
 function calculateGridItemSizePercentage(gridItems: number = 16): number {
-    let pixels: number = (CANVAS_SIZE / gridItems);
-    return pixels
+    let pixels: number = CANVAS_SIZE / gridItems;
+    return pixels;
 }
 
 function setCanvasSize() {
@@ -32,5 +33,11 @@ function displayGridItems(gridCount: number = 16) {
     }
 }
 
+function displayCurrentBackgroundColour(backgroundColor: string) {
+    const currentColour: HTMLElement = document.querySelector(".current-colour")!;
+    currentColour.style.backgroundColor = backgroundColor;
+}
+
 setCanvasSize();
+displayCurrentBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
 displayGridItems(16);
