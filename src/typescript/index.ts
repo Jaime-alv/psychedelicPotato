@@ -112,7 +112,7 @@ function validateNewCanvasSize(): number {
     let possibleNewValue: string = newCanvasValue.value;
     let gridSize: number = 0;
     let value: number = Number.parseInt(possibleNewValue);
-    if (value <= MAX_GRID_SIZE && value >= MIN_GRID_SIZE) {
+    if (typeof value === "number" && value <= MAX_GRID_SIZE && value >= MIN_GRID_SIZE) {
         gridSize = value;
     } else {
         gridSize = DEFAULT_CANVAS_GRID_ITEMS;
@@ -127,7 +127,7 @@ function createCanvasAndGrid(canvasConf: BoardConfiguration) {
 
 function main(canvasConf: BoardConfiguration) {
     let canvas = createGridCanvas(canvasConf.canvasSize);
-    displayGridItems(canvasConf, canvas)
+    displayGridItems(canvasConf, canvas);
     displayCurrentBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
 
     canvasSizeButton.addEventListener("click", () => {
