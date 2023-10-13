@@ -4,7 +4,7 @@ const CANVAS_SIZE: number = 500;
 const DEFAULT_BACKGROUND_COLOUR: string = "black";
 var RAINBOW_MODE: boolean = false;
 
-function createGridItem(gridSize: number, backgroundColor: string) {
+function createGridItem(gridSize: number, backgroundColor: string, parent: HTMLElement) {
     let gridItemSize: string = `${gridSize}px`;
     let gridItem = document.createElement("div");
     gridItem.classList.add("grid");
@@ -12,7 +12,7 @@ function createGridItem(gridSize: number, backgroundColor: string) {
     gridItem.addEventListener("mouseenter", () => {
         gridItem.style.backgroundColor = backgroundColor;
     });
-    gridCanvas.appendChild(gridItem);
+    parent.appendChild(gridItem);
 }
 
 function calculateGridItemSizePercentage(gridItems: number = 16): number {
@@ -20,18 +20,18 @@ function calculateGridItemSizePercentage(gridItems: number = 16): number {
     return pixels;
 }
 
-function setCanvasSize() {
+function setCanvasSize(canvas: HTMLElement) {
     let canvasSize = `${CANVAS_SIZE}px`;
-    gridCanvas.style.width = canvasSize;
-    gridCanvas.style.height = canvasSize;
+    canvas.style.width = canvasSize;
+    canvas.style.height = canvasSize;
 }
 
-function displayGridItems(gridCount: number = 16) {
+function displayGridItems(gridCount: number = 16, parent: HTMLElement) {
     const gridItemSize: number = calculateGridItemSizePercentage(gridCount);
     const totalGridItem: number = gridCount * gridCount;
     for (let i = 1; i < totalGridItem + 1; i++) {
         const backgroundColour: string = setGridBackgroundColour();
-        createGridItem(gridItemSize, backgroundColour);
+        createGridItem(gridItemSize, backgroundColour, parent);
     }
 }
 
@@ -53,18 +53,31 @@ function displayCurrentBackgroundColour(backgroundColor: string) {
     currentColour.style.backgroundColor = backgroundColor;
 }
 
-setCanvasSize();
+function reCreateCanvas(): HTMLElement {
+    let parent: HTMLElement = document.querySelector(".grid-container")!;
+    let child: HTMLElement = document.querySelector(".grid-canvas")!;
+    child.remove();
+    let newCanvas = document.createElement("div");
+    newCanvas.classList.add("grid-canvas");
+    setCanvasSize(newCanvas);
+    parent.appendChild(newCanvas);
+    return newCanvas;
+}
+
+setCanvasSize(gridCanvas);
 
 rainbowMode.addEventListener("click", () => {
     if (RAINBOW_MODE) {
         RAINBOW_MODE = false;
         displayCurrentBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
-        displayGridItems(16);
+        let canvas = reCreateCanvas();
+        displayGridItems(16, canvas);
     } else {
         RAINBOW_MODE = true;
-        displayGridItems(16);
+        let canvas = reCreateCanvas();
+        displayGridItems(16, canvas);
     }
 });
 
 displayCurrentBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
-displayGridItems(16);
+displayGridItems(16, gridCanvas);
