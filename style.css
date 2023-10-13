@@ -58,6 +58,7 @@ main {
     margin: 0px;
     padding: 0px;
     flex: auto;
+    background-color: lightgrey;
 }
 
 h2.title {
@@ -89,6 +90,7 @@ div.grid-canvas {
     flex-wrap: wrap;
     margin: 0px;
     padding: 0px;
+    background-color: #fffcfc;
 }
 
 div.grid-container {
@@ -133,6 +135,7 @@ aside {
     gap: 20px;
     align-items: center;
     padding-top: 10px;
+    justify-content: center;
 }
 
 .current-colour {
