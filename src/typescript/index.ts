@@ -55,12 +55,6 @@ function calculateGridItemSizePercentage(canvasSize: number, gridItems: number):
     return pixels;
 }
 
-function setCanvasSize(canvasSize: number, canvas: HTMLElement) {
-    let canvasSizeCSS = `${canvasSize}px`;
-    canvas.style.width = canvasSizeCSS;
-    canvas.style.height = canvasSizeCSS;
-}
-
 function displayGridItems(canvasConf: BoardConfiguration, parent: HTMLElement) {
     let gridItemSize: number = calculateGridItemSizePercentage(canvasConf.canvasSize, canvasConf.canvasGridItems);
     let totalGridItem: number = canvasConf.canvasGridItems * canvasConf.canvasGridItems;
@@ -139,10 +133,21 @@ function validateNewCanvasSize(): number {
     let value: number = Number.parseInt(possibleNewValue);
     if (typeof value === "number" && value <= MAX_GRID_SIZE && value >= MIN_GRID_SIZE) {
         gridSize = value;
+        newCanvasValue.style.backgroundColor = "#047000";
     } else {
+        newCanvasValue.style.backgroundColor = "#b90000";
         gridSize = DEFAULT_CANVAS_GRID_ITEMS;
-    }
+    }    
+    clearTextInput(newCanvasValue, 1);
     return gridSize;
+}
+
+function clearTextInput(inputText: HTMLInputElement, seconds: number) {
+    let duration = seconds * 1000; 
+    setTimeout(function(){
+        inputText.value = "";
+        inputText.style.backgroundColor = "#fffcfc";
+   },duration);   
 }
 
 function createCanvasAndGrid(canvasConf: BoardConfiguration) {

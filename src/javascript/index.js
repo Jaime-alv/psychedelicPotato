@@ -43,11 +43,6 @@ function calculateGridItemSizePercentage(canvasSize, gridItems) {
     let pixels = canvasSize / gridItems;
     return pixels;
 }
-function setCanvasSize(canvasSize, canvas) {
-    let canvasSizeCSS = `${canvasSize}px`;
-    canvas.style.width = canvasSizeCSS;
-    canvas.style.height = canvasSizeCSS;
-}
 function displayGridItems(canvasConf, parent) {
     let gridItemSize = calculateGridItemSizePercentage(canvasConf.canvasSize, canvasConf.canvasGridItems);
     let totalGridItem = canvasConf.canvasGridItems * canvasConf.canvasGridItems;
@@ -118,11 +113,21 @@ function validateNewCanvasSize() {
     let value = Number.parseInt(possibleNewValue);
     if (typeof value === "number" && value <= MAX_GRID_SIZE && value >= MIN_GRID_SIZE) {
         gridSize = value;
+        newCanvasValue.style.backgroundColor = "#047000";
     }
     else {
+        newCanvasValue.style.backgroundColor = "#b90000";
         gridSize = DEFAULT_CANVAS_GRID_ITEMS;
     }
+    clearTextInput(newCanvasValue, 1);
     return gridSize;
+}
+function clearTextInput(inputText, seconds) {
+    let duration = seconds * 1000;
+    setTimeout(function () {
+        inputText.value = "";
+        inputText.style.backgroundColor = "#fffcfc";
+    }, duration);
 }
 function createCanvasAndGrid(canvasConf) {
     let canvas = deleteAndCreateCanvas(canvasConf.canvasSize, gridContainer);
