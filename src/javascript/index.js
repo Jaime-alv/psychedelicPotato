@@ -1,4 +1,5 @@
 const gridCanvas = document.querySelector(".grid-canvas");
+const gridContainer = document.querySelector(".grid-container");
 const rainbowMode = document.querySelector(".rainbow-mode");
 const canvasSizeButton = document.querySelector(".submit-button");
 const CANVAS_SIZE = 500;
@@ -71,55 +72,58 @@ function displayCurrentBackgroundColour(backgroundColor) {
     const currentColour = document.querySelector(".current-colour");
     currentColour.style.backgroundColor = backgroundColor;
 }
-function reCreateCanvas(canvasSize) {
-    let parent = document.querySelector(".grid-container");
+function deleteAndCreateCanvas(canvasSize, parent) {
     let child = document.querySelector(".grid-canvas");
     child.remove();
-    let newCanvas = document.createElement("div");
-    newCanvas.classList.add("grid-canvas");
-    setCanvasSize(canvasSize, newCanvas);
+    let newCanvas = createGridCanvas(canvasSize);
     parent.appendChild(newCanvas);
     return newCanvas;
 }
-function validateNewCanvasSize(input) {
+function createGridCanvas(canvasSize) {
+    let parent = gridContainer;
+    let newCanvas = document.createElement("div");
+    newCanvas.classList.add("grid-canvas");
+    let canvasSizeCSS = `${canvasSize}px`;
+    newCanvas.style.width = canvasSizeCSS;
+    newCanvas.style.height = canvasSizeCSS;
+    parent.appendChild(newCanvas);
+    return newCanvas;
+}
+function validateNewCanvasSize() {
+    let newCanvasValue = document.querySelector(".submit-text");
+    let possibleNewValue = newCanvasValue.value;
     let gridSize = 0;
-    try {
-        let value = Number.parseInt(input);
-        if (value <= MAX_GRID_SIZE && value >= MIN_GRID_SIZE) {
-            gridSize = value;
-        }
+    let value = Number.parseInt(possibleNewValue);
+    if (value <= MAX_GRID_SIZE && value >= MIN_GRID_SIZE) {
+        gridSize = value;
     }
-    catch (error) {
-        alert(error);
+    else {
         gridSize = DEFAULT_CANVAS_GRID_ITEMS;
     }
     return gridSize;
 }
-function createCanvas(canvasConf) {
-    let canvas = reCreateCanvas(canvasConf.canvasSize);
+function createCanvasAndGrid(canvasConf) {
+    let canvas = deleteAndCreateCanvas(canvasConf.canvasSize, gridContainer);
     displayGridItems(canvasConf, canvas);
 }
 function main(canvasConf) {
-    alert("Invoke main");
-    setCanvasSize(canvasConf.canvasSize, gridCanvas);
+    let canvas = createGridCanvas(canvasConf.canvasSize);
+    displayGridItems(canvasConf, canvas);
     displayCurrentBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
-    displayGridItems(canvasConf, gridCanvas);
     canvasSizeButton.addEventListener("click", () => {
-        let newCanvasValue = document.querySelector(".submit-text");
-        let possibleNewValue = newCanvasValue.value;
-        let newCanvasGridSizeValue = validateNewCanvasSize(possibleNewValue);
+        let newCanvasGridSizeValue = validateNewCanvasSize();
         canvasConf.canvasGridItems = newCanvasGridSizeValue;
-        createCanvas(canvasConf);
+        createCanvasAndGrid(canvasConf);
     });
     rainbowMode.addEventListener("click", () => {
         if (canvasConf.rainbowMode) {
             canvasConf.rainbowMode = false;
             displayCurrentBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
-            createCanvas(canvasConf);
+            createCanvasAndGrid(canvasConf);
         }
         else {
             canvasConf.rainbowMode = true;
-            createCanvas(canvasConf);
+            createCanvasAndGrid(canvasConf);
         }
     });
 }
