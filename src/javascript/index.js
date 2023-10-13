@@ -69,8 +69,30 @@ function randomizeBackgroundColour() {
     return `#${randomColour}`;
 }
 function displayCurrentBackgroundColour(backgroundColor) {
-    const currentColour = document.querySelector(".current-colour");
-    currentColour.style.backgroundColor = backgroundColor;
+    let asideInformation = document.querySelector(".information");
+    let rainbowButton = document.querySelector(".rainbow-mode");
+    let colourDisplay = document.createElement("div");
+    colourDisplay.classList.add("current-colour");
+    colourDisplay.style.backgroundColor = backgroundColor;
+    asideInformation?.prepend(colourDisplay);
+    rainbowButton.textContent = "Rainbow!";
+}
+function removeCurrentBackgroundColour() {
+    let colourDisplay = document.querySelector(".current-colour");
+    colourDisplay?.remove();
+}
+function displayRainbowImage() {
+    let asideInformation = document.querySelector(".information");
+    let rainbowButton = document.querySelector(".rainbow-mode");
+    let rainbowImage = document.createElement("img");
+    rainbowImage.classList.add("rainbow-image");
+    rainbowImage.src = "./image/rainbow-flag.png";
+    asideInformation?.prepend(rainbowImage);
+    rainbowButton.textContent = "Standard";
+}
+function removeRainbowImage() {
+    let rainbowImage = document.querySelector(".rainbow-image");
+    rainbowImage?.remove();
 }
 function deleteAndCreateCanvas(canvasSize, parent) {
     let child = document.querySelector(".grid-canvas");
@@ -94,7 +116,7 @@ function validateNewCanvasSize() {
     let possibleNewValue = newCanvasValue.value;
     let gridSize = 0;
     let value = Number.parseInt(possibleNewValue);
-    if (value <= MAX_GRID_SIZE && value >= MIN_GRID_SIZE) {
+    if (typeof value === "number" && value <= MAX_GRID_SIZE && value >= MIN_GRID_SIZE) {
         gridSize = value;
     }
     else {
@@ -118,11 +140,14 @@ function main(canvasConf) {
     rainbowMode.addEventListener("click", () => {
         if (canvasConf.rainbowMode) {
             canvasConf.rainbowMode = false;
+            removeRainbowImage();
             displayCurrentBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
             createCanvasAndGrid(canvasConf);
         }
         else {
             canvasConf.rainbowMode = true;
+            removeCurrentBackgroundColour();
+            displayRainbowImage();
             createCanvasAndGrid(canvasConf);
         }
     });

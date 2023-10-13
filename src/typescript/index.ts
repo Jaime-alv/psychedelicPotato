@@ -84,8 +84,33 @@ function randomizeBackgroundColour(): string {
 }
 
 function displayCurrentBackgroundColour(backgroundColor: string) {
-    const currentColour: HTMLElement = document.querySelector(".current-colour")!;
-    currentColour.style.backgroundColor = backgroundColor;
+    let asideInformation = document.querySelector(".information");
+    let rainbowButton: HTMLButtonElement = document.querySelector(".rainbow-mode")!;
+    let colourDisplay = document.createElement("div");
+    colourDisplay.classList.add("current-colour");
+    colourDisplay.style.backgroundColor = backgroundColor;
+    asideInformation?.prepend(colourDisplay);
+    rainbowButton.textContent = "Rainbow!"
+}
+
+function removeCurrentBackgroundColour() {
+    let colourDisplay = document.querySelector(".current-colour");
+    colourDisplay?.remove();
+}
+
+function displayRainbowImage() {
+    let asideInformation = document.querySelector(".information");
+    let rainbowButton: HTMLButtonElement = document.querySelector(".rainbow-mode")!;
+    let rainbowImage = document.createElement("img");
+    rainbowImage.classList.add("rainbow-image");
+    rainbowImage.src = "./image/rainbow-flag.png";
+    asideInformation?.prepend(rainbowImage);
+    rainbowButton.textContent = "Standard"
+}
+
+function removeRainbowImage() {
+    let rainbowImage = document.querySelector(".rainbow-image");
+    rainbowImage?.remove();
 }
 
 function deleteAndCreateCanvas(canvasSize: number, parent: HTMLElement): HTMLElement {
@@ -139,10 +164,13 @@ function main(canvasConf: BoardConfiguration) {
     rainbowMode.addEventListener("click", () => {
         if (canvasConf.rainbowMode) {
             canvasConf.rainbowMode = false;
+            removeRainbowImage();
             displayCurrentBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
             createCanvasAndGrid(canvasConf);
         } else {
             canvasConf.rainbowMode = true;
+            removeCurrentBackgroundColour();
+            displayRainbowImage();
             createCanvasAndGrid(canvasConf);
         }
     });
