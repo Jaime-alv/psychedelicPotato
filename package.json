@@ -1,6 +1,6 @@
 {
   "name": "etchasketch",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Browser version of something between a sketchpad and an Etch-a-Sketch",
   "main": "index.js",
   "scripts": {
