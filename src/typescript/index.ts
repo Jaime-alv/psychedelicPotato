@@ -1,8 +1,42 @@
 const gridCanvas: HTMLElement = document.querySelector(".grid-canvas")!;
 const rainbowMode: HTMLElement = document.querySelector(".rainbow-mode")!;
+const canvasSizeButton: HTMLElement = document.querySelector(".submit-button")!;
 const CANVAS_SIZE: number = 500;
 const DEFAULT_BACKGROUND_COLOUR: string = "black";
-var RAINBOW_MODE: boolean = false;
+const DEFAULT_CANVAS_GRID_ITEMS: number = 10;
+const MIN_GRID_SIZE: number = 3;
+const MAX_GRID_SIZE: number = 100;
+
+class BoardConfiguration {
+    _rainbowMode: boolean;
+    _canvasGridItems: number;
+    _canvasSize: number;
+    constructor(rainbowMode: boolean, canvasGridItems: number, canvasSize: number) {
+        this._rainbowMode = rainbowMode;
+        this._canvasGridItems = canvasGridItems;
+        this._canvasSize = canvasSize;
+    }
+
+    public set rainbowMode(value: boolean) {
+        this._rainbowMode = value;
+    }
+
+    public set canvasGridItems(value: number) {
+        this._canvasGridItems = value;
+    }
+
+    public get rainbowMode(): boolean {
+        return this._rainbowMode;
+    }
+
+    public get canvasGridItems(): number {
+        return this._canvasGridItems;
+    }
+
+    public get canvasSize(): number {
+        return this._canvasSize;
+    }
+}
 
 function createGridItem(gridSize: number, backgroundColor: string, parent: HTMLElement) {
     let gridItemSize: string = `${gridSize}px`;
@@ -15,28 +49,28 @@ function createGridItem(gridSize: number, backgroundColor: string, parent: HTMLE
     parent.appendChild(gridItem);
 }
 
-function calculateGridItemSizePercentage(gridItems: number = 16): number {
-    let pixels: number = CANVAS_SIZE / gridItems;
+function calculateGridItemSizePercentage(canvasSize: number, gridItems: number): number {
+    let pixels: number = canvasSize / gridItems;
     return pixels;
 }
 
-function setCanvasSize(canvas: HTMLElement) {
-    let canvasSize = `${CANVAS_SIZE}px`;
-    canvas.style.width = canvasSize;
-    canvas.style.height = canvasSize;
+function setCanvasSize(canvasSize: number, canvas: HTMLElement) {
+    let canvasSizeCSS = `${canvasSize}px`;
+    canvas.style.width = canvasSizeCSS;
+    canvas.style.height = canvasSizeCSS;
 }
 
-function displayGridItems(gridCount: number = 16, parent: HTMLElement) {
-    const gridItemSize: number = calculateGridItemSizePercentage(gridCount);
-    const totalGridItem: number = gridCount * gridCount;
+function displayGridItems(canvasConf: BoardConfiguration, parent: HTMLElement) {
+    let gridItemSize: number = calculateGridItemSizePercentage(canvasConf.canvasSize, canvasConf.canvasGridItems);
+    let totalGridItem: number = canvasConf.canvasGridItems * canvasConf.canvasGridItems;
     for (let i = 1; i < totalGridItem + 1; i++) {
-        const backgroundColour: string = setGridBackgroundColour();
+        const backgroundColour: string = setGridBackgroundColour(canvasConf.rainbowMode);
         createGridItem(gridItemSize, backgroundColour, parent);
     }
 }
 
-function setGridBackgroundColour(): string {
-    if (RAINBOW_MODE) {
+function setGridBackgroundColour(rainbowMode: boolean): string {
+    if (rainbowMode) {
         return randomizeBackgroundColour();
     } else {
         return DEFAULT_BACKGROUND_COLOUR;
@@ -53,31 +87,61 @@ function displayCurrentBackgroundColour(backgroundColor: string) {
     currentColour.style.backgroundColor = backgroundColor;
 }
 
-function reCreateCanvas(): HTMLElement {
+function reCreateCanvas(canvasSize: number): HTMLElement {
     let parent: HTMLElement = document.querySelector(".grid-container")!;
     let child: HTMLElement = document.querySelector(".grid-canvas")!;
     child.remove();
-    let newCanvas = document.createElement("div");
+    let newCanvas: HTMLDivElement = document.createElement("div");
     newCanvas.classList.add("grid-canvas");
-    setCanvasSize(newCanvas);
+    setCanvasSize(canvasSize, newCanvas);
     parent.appendChild(newCanvas);
     return newCanvas;
 }
 
-setCanvasSize(gridCanvas);
-
-rainbowMode.addEventListener("click", () => {
-    if (RAINBOW_MODE) {
-        RAINBOW_MODE = false;
-        displayCurrentBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
-        let canvas = reCreateCanvas();
-        displayGridItems(16, canvas);
-    } else {
-        RAINBOW_MODE = true;
-        let canvas = reCreateCanvas();
-        displayGridItems(16, canvas);
+function validateNewCanvasSize(input: string): number {
+    let gridSize: number = 0;
+    try {
+        let value: number = Number.parseInt(input);
+        if (value <= MAX_GRID_SIZE && value >= MIN_GRID_SIZE) {
+            gridSize = value;
+        }
+    } catch (error) {
+        alert(error);
+        gridSize = DEFAULT_CANVAS_GRID_ITEMS;
     }
-});
+    return gridSize;
+}
 
-displayCurrentBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
-displayGridItems(16, gridCanvas);
+function createCanvas(canvasConf: BoardConfiguration) {
+    let canvas = reCreateCanvas(canvasConf.canvasSize);
+    displayGridItems(canvasConf, canvas);
+}
+
+function main(canvasConf: BoardConfiguration) {
+    alert("Invoke main");
+    setCanvasSize(canvasConf.canvasSize, gridCanvas);
+    displayCurrentBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
+    displayGridItems(canvasConf, gridCanvas);
+
+    canvasSizeButton.addEventListener("click", () => {
+        let newCanvasValue: HTMLInputElement = document.querySelector(".submit-text")!;
+        let possibleNewValue: string = newCanvasValue.value;
+        let newCanvasGridSizeValue: number = validateNewCanvasSize(possibleNewValue);
+        canvasConf.canvasGridItems = newCanvasGridSizeValue;
+        createCanvas(canvasConf);
+    });
+
+    rainbowMode.addEventListener("click", () => {
+        if (canvasConf.rainbowMode) {
+            canvasConf.rainbowMode = false;
+            displayCurrentBackgroundColour(DEFAULT_BACKGROUND_COLOUR);
+            createCanvas(canvasConf);
+        } else {
+            canvasConf.rainbowMode = true;
+            createCanvas(canvasConf);
+        }
+    });
+}
+
+let canvasConfiguration = new BoardConfiguration(false, DEFAULT_CANVAS_GRID_ITEMS, CANVAS_SIZE);
+main(canvasConfiguration);
