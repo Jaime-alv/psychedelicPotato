@@ -105,23 +105,28 @@ aside form {
 }
 
 input.submit-button,
-input.submit-text {
+input.submit-text,
+.rainbow-mode {
     border-radius: 5px;
     padding: 5px 0px;
 }
 
-input.submit-button {
+input.submit-button,
+.rainbow-mode {
     border: 0px;
     background-color: #604c4c;
     color: #fffcfc;
+    padding: 10px 0px;
+    width: 100px;
 }
 
-input.submit-button:hover {
+input.submit-button:hover,
+.rainbow-mode:hover {
     background-color: #eac784;
     color: #0b421a;
 }
 
-aside{
+aside {
     display: flex;
     flex-direction: column;
     gap: 20px;
